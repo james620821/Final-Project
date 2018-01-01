@@ -12,7 +12,7 @@ struct card
 
 typedef struct card Card;
 
-
+int getGrade(Card * const wDeck, int x);
 void play(Card * const wDeck, int boilingPoint);
 
 int main(void)
@@ -30,7 +30,31 @@ int main(void)
 }
 
 
-
+int getGrade(Card * const wDeck, int x)
+{                                                                                       //把牌上的號碼轉換成點數,假設抽到A,會提醒說要把A當作1還是11 
+	int grade = 0, userInput = 1;
+	if (wDeck[x].face == "A"){
+		printf("想變成1還是變成11呢?想變成1請輸入1,想變成11請輸入1以外的整數.\n");
+		scanf("%d", &userInput);
+		if (userInput == 1)
+			grade = 1;
+		else
+			grade = 11;
+	}
+	if (wDeck[x].face == "2") grade = 2;
+	if (wDeck[x].face == "3") grade = 3;
+	if (wDeck[x].face == "4") grade = 4;
+	if (wDeck[x].face == "5") grade = 5;
+	if (wDeck[x].face == "6") grade = 6;
+	if (wDeck[x].face == "7") grade = 7;
+	if (wDeck[x].face == "8") grade = 8;
+	if (wDeck[x].face == "9") grade = 9;
+	if (wDeck[x].face == "10") grade = 10;
+	if (wDeck[x].face == "J") grade = 10;
+	if (wDeck[x].face == "Q") grade = 10;
+	if (wDeck[x].face == "K") grade = 10;
+	return grade;
+}
 
 
 void play(Card * const wDeck, int boilingPoint)
