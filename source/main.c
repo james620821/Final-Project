@@ -12,12 +12,14 @@ struct card
 
 typedef struct card Card;
 
-int getGrade(Card * const wDeck, int x);
+void fillDeck(Card *const wDeck, const char *wFace[]);
+void shuffle(Card *const wDeck);
 void play(Card * const wDeck, int boilingPoint);
+int getGrade(Card * const wDeck, int x);
 
 int main(void)
 {
-	int p, d=0,b=1,a;
+	int p, d = 0, b = 1, a;
 	const char *face[] = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 	// const char *suit[] = { "紅心", "菱形", "方塊", "梅花" };
 
@@ -29,11 +31,38 @@ int main(void)
 	system("pause");
 }
 
+void fillDeck(Card *const wDeck, const char *wFace[])
+{
+	int i;
+	for (i = 0; i < CARDS; ++i)
+	{
+		wDeck[i].face = wFace[i % 13];
+		//wDeck[i].suit = wSuit[i / FACES];
+	}
+}
 
+void shuffle(Card *const wDeck)
+{
+	int i, j;
+	Card temp;
+	for (i = 0; i < CARDS; ++i)
+	{
+		j = rand() % CARDS;
+		temp = wDeck[i];
+		wDeck[i] = wDeck[j];
+		wDeck[j] = temp;
+	}
+
+
+
+
+
+
+}
 int getGrade(Card * const wDeck, int x)
 {                                                                                       //把牌上的號碼轉換成點數,假設抽到A,會提醒說要把A當作1還是11 
 	int grade = 0, userInput = 1;
-	if (wDeck[x].face == "A"){
+	if (wDeck[x].face == "A") {
 		printf("想變成1還是變成11呢?想變成1請輸入1,想變成11請輸入1以外的整數.\n");
 		scanf("%d", &userInput);
 		if (userInput == 1)
@@ -56,11 +85,10 @@ int getGrade(Card * const wDeck, int x)
 	return grade;
 }
 
-
 void play(Card * const wDeck, int boilingPoint)
 {
 	int cnt = 4, aWantToContinue = 1, bWantToContinue = 1, aGrade = getGrade(wDeck, 0) + getGrade(wDeck, 1), bGrade = 0;
-	printf("玩家A底牌為:%s %s\n",wDeck[0],wDeck[1]);
+	printf("玩家A底牌為:%s %s\n", wDeck[0], wDeck[1]);
 	printf("(A)目前點數%d\n", aGrade);
 	while (cnt < CARDS && (aWantToContinue == 1 || bWantToContinue == 1))
 	{
@@ -72,17 +100,17 @@ void play(Card * const wDeck, int boilingPoint)
 
 			aGrade = aGrade + getGrade(wDeck, cnt);
 			cnt = cnt + 1;
-			
+
 		}
 		if (aGrade>21)
 		{
-			printf("玩家A的點數:%d  爆掉了-->玩家B WIN!!!",aGrade);
+			printf("玩家A的點數:%d  爆掉了-->玩家B WIN!!!", aGrade);
 			return 0;
 		}
-		
+
 		if (aWantToContinue == 0)
 			break;
-	printf("(A)目前點數%d\n", aGrade);
+		printf("(A)目前點數%d\n", aGrade);
 	}
 	bGrade = getGrade(wDeck, 2) + getGrade(wDeck, 3);
 	printf("玩家B底牌為:%s %s\n", wDeck[2], wDeck[3]);
@@ -129,6 +157,3 @@ void play(Card * const wDeck, int boilingPoint)
 
 
 }
-	
-
-
